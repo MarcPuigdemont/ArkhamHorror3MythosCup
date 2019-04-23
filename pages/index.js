@@ -1,28 +1,27 @@
-import 'isomorphic-fetch'
-import React from 'react'
-import { connect } from 'react-redux'
+import 'isomorphic-fetch';
+import React from 'react';
 
-import Fork from '../components/Fork'
-import Todo from '../components/Todo'
+import CupItem from '../components/CupItem';
 
-// Port in to using useState hooks, if you need state
-const Index = ({ stars }) => (
-	<div>
-		<Fork stars={stars} />
-		<div>
-			<Todo />
-		</div>
-	</div>
-)
+const cups = [
+  {
+    scenario: 'Feast For Umordoth',
+    difficulty: 'Hard'
+  },
+  {
+    scenario: 'Approach of Azathoth',
+    difficulty: 'Easy'
+  }
+];
 
-Index.getInitialProps = async({ store }) => {
-	// Adding a default/initialState can be done as follows:
-	// store.dispatch({ type: 'ADD_TODO', text: 'It works!' });
-	const res = await fetch(
-		'https://api.github.com/repos/ooade/NextSimpleStarter'
-	)
-	const json = await res.json()
-	return { stars: json.stargazers_count }
-}
+const Index = props => (
+  <div className="view">
+    <div className="mdl-list">
+      {cups.map((cup, i) => (
+        <CupItem key={i} cup={cup} />
+      ))}
+    </div>
+  </div>
+);
 
-export default connect()(Index)
+export default Index;

@@ -1,0 +1,49 @@
+.app {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  background: url('img/background.jpg') center / cover;
+}
+
+.mdl-layout__drawer-button {
+  color: white;
+}
+
+.mdl-list__item-secondary-content {
+  flex-flow: row !important;
+}
+
+.mdl-list__item-secondary-action {
+  margin: 0 5px;
+  color: gray;
+}
+
+.menu-title {
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.view {
+  position: absolute;
+  margin: auto;
+  top: 60px;
+  left: 20px;
+  right: 20px;
+  max-height: 85%;
+  overflow: scroll;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.play-view {
+  position: absolute;
+  top: 60px;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
