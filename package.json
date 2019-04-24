@@ -1,26 +1,27 @@
 {
-	"name": "arkham-horror-3-mythos-cup",
-	"description": "Arkham Horror 3rd Edition configurable Mythos cup",
-	"version": "1.0.0",
-	"repository": {
-		"url": "https://github.com/MarcPuigdemont/ArkhamHorror3MythosCup"
-	},
-	"license": "MIT",
-	"dependencies": {
-		"isomorphic-fetch": "^2.2.1",
-		"next": "^8.1.0",
-		"next-offline": "^3.3.7",
-		"next-redux-wrapper": "^3.0.0-alpha.2",
-		"react": "^16.8.6",
-		"react-dom": "^16.8.6",
-		"react-redux": "^7.0.2",
-		"redux": "^3.7.2",
-		"redux-react-hook": "^3.3.1"
-	},
-	"scripts": {
-		"dev": "next",
-		"build": "next build",
-		"start": "next start",
-		"now-build": "next build"
-	}
+  "name": "arkham-horror-3-mythos-cup",
+  "description": "Arkham Horror 3rd Edition configurable Mythos cup",
+  "version": "1.0.0",
+  "repository": {
+    "url": "https://github.com/MarcPuigdemont/ArkhamHorror3MythosCup"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "next": "^8.1.0",
+    "next-offline": "^3.3.7",
+    "next-redux-wrapper": "^3.0.0-alpha.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.0.2",
+    "redux": "^3.7.2",
+    "redux-react-hook": "^3.3.1"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start -p $PORT",
+    "now-build": "next build",
+    "heroku-postbuild": "npm run build"
+  }
 }
