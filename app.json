@@ -1,0 +1,13 @@
+{
+  "name": "arkham-horror-3-mythos-cup",
+  "description": "Arkham Horror 3rd Edition configurable Mythos cup",
+  "scripts": {},
+  "env": {},
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [],
+  "buildpacks": []
+}
