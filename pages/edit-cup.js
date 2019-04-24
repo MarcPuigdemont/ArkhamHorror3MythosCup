@@ -20,7 +20,7 @@ const cup = {
 
 const style = {
   difficulty: {
-    marginTop: '0px'
+    margin: '0 auto'
   }
 };
 

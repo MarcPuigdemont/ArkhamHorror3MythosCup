@@ -2,16 +2,18 @@ import React, { useState, useCallback } from 'react';
 
 const styleTemplate = image => ({
   token: {
-    margin: '16px',
+    margin: '16px 20px',
     display: 'flex',
     flexFlow: 'column',
     alignItems: 'center'
   },
   name: {
+    position: 'absolute',
     fontWeight: 'bold',
     marginBottom: '4px'
   },
   image: {
+    marginTop: '24px',
     width: '70px',
     height: '70px',
     background: `url('static/tokens/${image}.png') center / cover`
