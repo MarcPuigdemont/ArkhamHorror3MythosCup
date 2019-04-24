@@ -20,7 +20,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start -p $PORT",
+    "start": "next start",
     "now-build": "next build",
     "heroku-postbuild": "npm run build"
   }
