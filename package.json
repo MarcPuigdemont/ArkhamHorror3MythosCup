@@ -20,9 +20,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start -p $PORT",
-    "now-build": "next build",
-    "heroku-postbuild": "npm run build"
+    "start": "next start",
+    "now-build": "next build"
   },
   "engines": {
     "node": "10"
