@@ -1,17 +1,30 @@
 import 'isomorphic-fetch';
-import React, { useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
+import { useDispatch } from 'redux-react-hook';
+import { withRouter } from 'next/router';
+
+import { addCup } from '../actions/cups';
 
 const CreateCup = props => {
+  const { router } = props;
   const inputScenario = useRef(null);
   const inputName = useRef(null);
+  const dispatch = useDispatch();
 
-  const handleAddTodo = e => {
+  const handleAddCup = useCallback(e => {
     e.preventDefault();
-  };
+    dispatch(
+      addCup({
+        scenario: inputScenario.current.value,
+        difficulty: inputName.current.value
+      })
+    );
+    router.push({ pathname: '/' });
+  });
 
   return (
     <div className="mdl-card mdl-shadow--2dp">
-      <form onSubmit={handleAddTodo}>
+      <form onSubmit={handleAddCup}>
         <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input
             type="text"
@@ -35,8 +48,9 @@ const CreateCup = props => {
           </label>
         </div>
         <button
-          class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect"
+          className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect"
           style={{ display: 'flex' }}
+          onClick={handleAddCup}
         >
           <i class="material-icons">add</i>
         </button>
@@ -59,4 +73,4 @@ const CreateCup = props => {
   );
 };
 
-export default CreateCup;
+export default withRouter(CreateCup);

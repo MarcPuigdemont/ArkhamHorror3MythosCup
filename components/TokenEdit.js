@@ -36,7 +36,7 @@ const styleTemplate = image => ({
 
 const TokenEdit = ({ token }) => {
   const style = styleTemplate(token.image);
-  const [count, setCount] = useState(2);
+  const [count, setCount] = useState(token.count);
   const increaseCount = useCallback(() => {
     if (count < 9) {
       setCount(count + 1);

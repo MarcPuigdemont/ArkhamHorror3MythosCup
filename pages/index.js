@@ -1,27 +1,24 @@
 import 'isomorphic-fetch';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useMappedState } from 'redux-react-hook';
 
 import CupItem from '../components/CupItem';
 
-const cups = [
-  {
-    scenario: 'Feast For Umordoth',
-    difficulty: 'Hard'
-  },
-  {
-    scenario: 'Approach of Azathoth',
-    difficulty: 'Easy'
-  }
-];
+const Index = props => {
+  const mapState = state => state.cups;
+  const cups = useMappedState(mapState);
+  let visible = useCallback(() => cups.length > 0, [cups]);
+  console.log(props);
 
-const Index = props => (
-  <div className="view">
-    <div className="mdl-list">
-      {cups.map((cup, i) => (
-        <CupItem key={i} cup={cup} />
-      ))}
+  return (
+    <div className="view" style={{ visibility: visible() ? 'auto' : 'hidden' }}>
+      <div className="mdl-list">
+        {cups.map(cup => (
+          <CupItem key={cup.id} cup={cup} />
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Index;

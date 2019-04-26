@@ -1,8 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
-import { Provider } from 'react-redux';
 import App, { Container } from 'next/app';
-import withRedux from 'next-redux-wrapper';
+import { StoreContext } from 'redux-react-hook';
 import { withRouter } from 'next/router';
 
 import initStore from '../utils/store';
@@ -16,29 +15,27 @@ const routeNames = {
   '/settings': 'Settings'
 };
 
+const store = initStore({});
+
 /* debug to log how the store is being used */
-export default withRedux(initStore, {
-  debug: typeof window !== 'undefined' && process.env.NODE_ENV !== 'production'
-})(
-  withRouter(
-    class MyApp extends App {
-      render() {
-        const { Component, store, router } = this.props;
-        const menuTitle = routeNames[router.pathname];
-        return (
-          <Container>
-            <Head>
-              <title>Mythos Cup</title>
-            </Head>
-            <Provider store={store}>
-              <div className="app">
-                <Menu title={menuTitle} />
-                <Component />
-              </div>
-            </Provider>
-          </Container>
-        );
-      }
+export default withRouter(
+  class MyApp extends App {
+    render() {
+      const { Component, router } = this.props;
+      const menuTitle = routeNames[router.pathname];
+      return (
+        <Container>
+          <Head>
+            <title>Mythos Cup</title>
+          </Head>
+          <StoreContext.Provider value={store}>
+            <div className="app">
+              <Menu title={menuTitle} />
+              <Component />
+            </div>
+          </StoreContext.Provider>
+        </Container>
+      );
     }
-  )
+  }
 );

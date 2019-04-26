@@ -1,21 +1,23 @@
 import 'isomorphic-fetch';
 import React from 'react';
+import { useMappedState } from 'redux-react-hook';
+import { withRouter } from 'next/router';
 
 import TokenEdit from '../components/TokenEdit';
 
-const tokens = [
-  { name: 'Spawn clue', image: 'clue' },
-  { name: 'Spread doom', image: 'doom' },
-  { name: 'Portal bursts', image: 'portal' },
-  { name: 'Spawn monster', image: 'monster' },
-  { name: 'Headline', image: 'headline' },
-  { name: 'Reckoning', image: 'reckoning' },
-  { name: 'Empty', image: 'empty' }
+const initialTokens = [
+  { name: 'Spawn clue', image: 'clue', count: 0 },
+  { name: 'Spread doom', image: 'doom', count: 0 },
+  { name: 'Portal bursts', image: 'portal', count: 0 },
+  { name: 'Spawn monster', image: 'monster', count: 0 },
+  { name: 'Headline', image: 'headline', count: 0 },
+  { name: 'Reckoning', image: 'reckoning', count: 0 },
+  { name: 'Empty', image: 'empty', count: 0 }
 ];
 
-const cup = {
-  scenario: 'Feast For Umordoth',
-  difficulty: 'Hard'
+const defaultCup = {
+  scenario: '--',
+  difficulty: '--'
 };
 
 const style = {
@@ -25,6 +27,13 @@ const style = {
 };
 
 const EditCup = props => {
+  const { router } = props;
+  const id = router.query.id;
+
+  const mapState = state => state.cups.find(cup => cup.id === id);
+  const cup = useMappedState(mapState) || defaultCup;
+  let tokens = cup.tokens || initialTokens;
+
   return (
     <div className="view">
       <div className="mdl-grid">
@@ -50,4 +59,4 @@ const EditCup = props => {
   );
 };
 
-export default EditCup;
+export default withRouter(EditCup);
