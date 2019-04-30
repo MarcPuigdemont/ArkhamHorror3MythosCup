@@ -6,6 +6,7 @@ import { withRouter } from 'next/router';
 
 import initStore from '../utils/store';
 import Menu from '../components/Menu';
+import { loadState, saveState } from '../utils/localStorage';
 
 const routeNames = {
   '/': 'Mythos Cup',
@@ -15,7 +16,13 @@ const routeNames = {
   '/settings': 'Settings'
 };
 
-const store = initStore({});
+const initialState = loadState();
+const store = initStore(initialState);
+store.subscribe(() => {
+  saveState({
+    cups: store.getState().cups
+  });
+});
 
 /* debug to log how the store is being used */
 export default withRouter(

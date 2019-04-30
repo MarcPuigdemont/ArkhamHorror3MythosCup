@@ -1,5 +1,9 @@
 import 'isomorphic-fetch';
-import React from 'react';
+import React, { useCallback } from 'react';
+
+import { useDispatch } from 'redux-react-hook';
+
+import { removeAll } from '../actions/cups';
 
 const style = {
   setting: {
@@ -15,9 +19,14 @@ const style = {
 };
 
 const Settings = props => {
+  const dispatch = useDispatch();
+  const clearCache = useCallback(() => {
+    dispatch(removeAll());
+  });
+
   return (
     <div className="view">
-      <div style={style.setting}>
+      <div style={style.setting} onClick={clearCache}>
         <div style={style.option}>
           Delete LocalStorage and completely reset the app
         </div>

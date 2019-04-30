@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 const styleTemplate = image => ({
   token: {
@@ -34,19 +34,19 @@ const styleTemplate = image => ({
   }
 });
 
-const TokenEdit = ({ token }) => {
+const TokenEdit = ({ token, onChange }) => {
   const style = styleTemplate(token.image);
-  const [count, setCount] = useState(token.count);
+  const count = token.count;
   const increaseCount = useCallback(() => {
     if (count < 9) {
-      setCount(count + 1);
+      onChange({ ...token, count: count + 1 });
     }
-  }, [count]);
+  }, [count, onChange]);
   const decreaseCount = useCallback(() => {
     if (count > 0) {
-      setCount(count - 1);
+      onChange({ ...token, count: count - 1 });
     }
-  }, [count]);
+  }, [count, onChange]);
 
   return (
     <div style={style.token}>
