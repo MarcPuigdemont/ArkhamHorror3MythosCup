@@ -22,6 +22,12 @@ const CreateCup = props => {
     router.push({ pathname: '/' });
   });
 
+  const styles = {
+    label: {
+      top: 0
+    }
+  };
+
   return (
     <div className="mdl-card mdl-shadow--2dp">
       <form onSubmit={handleAddCup}>
@@ -32,7 +38,11 @@ const CreateCup = props => {
             className="mdl-textfield__input"
             id="inputScenario"
           />
-          <label className="mdl-textfield__label" htmlFor="inputScenario">
+          <label
+            className="mdl-textfield__label"
+            htmlFor="inputScenario"
+            style={styles.label}
+          >
             Which scenario are you playing?
           </label>
         </div>
@@ -43,8 +53,12 @@ const CreateCup = props => {
             className="mdl-textfield__input"
             id="inputName"
           />
-          <label className="mdl-textfield__label" htmlFor="inputName">
-            How would you name this Mythos Cup?
+          <label
+            className="mdl-textfield__label"
+            htmlFor="inputName"
+            style={styles.label}
+          >
+            How would you name the difficulty are you playing?
           </label>
         </div>
         <button
@@ -52,7 +66,7 @@ const CreateCup = props => {
           style={{ display: 'flex' }}
           onClick={handleAddCup}
         >
-          <i class="material-icons">add</i>
+          <i className="material-icons">add</i>
         </button>
       </form>
       <style>{`
