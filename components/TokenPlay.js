@@ -3,7 +3,7 @@ import React from 'react';
 const styleTemplate = (first, revealed) => ({
   token: {
     margin: '4px',
-    marginLeft: first ? '4px' : '-20px'
+    marginLeft: first ? '4px' : '-28px'
   },
   image: {
     width: '40px',

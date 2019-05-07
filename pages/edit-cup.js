@@ -48,7 +48,9 @@ const EditCup = props => {
   if (cup && !cup.tokens) {
     dispatch(
       updateCup({
-        ...cup,
+        id: cup.id,
+        scenario: cup.scenario,
+        difficulty: cup.difficulty,
         tokens: initialTokens
       })
     );
@@ -61,7 +63,9 @@ const EditCup = props => {
 
       dispatch(
         updateCup({
-          ...cup,
+          id: cup.id,
+          scenario: cup.scenario,
+          difficulty: cup.difficulty,
           tokens: tokens.map(t => (t.name === token.name ? token : t))
         })
       );

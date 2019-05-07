@@ -1,27 +1,13 @@
 import 'isomorphic-fetch';
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useMappedState } from 'redux-react-hook';
+import { withRouter } from 'next/router';
+import { useDispatch } from 'redux-react-hook';
+
+import { updateCup } from '../actions/cups';
+
+import TokenBig from '../components/TokenBig';
 import TokenPlay from '../components/TokenPlay';
-
-const tokens = [
-  { name: 'Spawn clue', image: 'clue', revealed: true },
-  { name: 'Spawn clue', image: 'clue', revealed: false },
-  { name: 'Spread doom', image: 'doom', revealed: false },
-  { name: 'Spread doom', image: 'doom', revealed: false },
-  { name: 'Portal bursts', image: 'portal', revealed: false },
-  { name: 'Spawn monster', image: 'monster', revealed: true },
-  { name: 'Spawn monster', image: 'monster', revealed: false },
-  { name: 'Headline', image: 'headline', revealed: true },
-  { name: 'Headline', image: 'headline', revealed: false },
-  { name: 'Reckoning', image: 'reckoning', revealed: false },
-  { name: 'Empty', image: 'empty', revealed: true },
-  { name: 'Empty', image: 'empty', revealed: true },
-  { name: 'Empty', image: 'empty', revealed: false }
-];
-
-const cup = {
-  scenario: 'Feast For Umordoth',
-  difficulty: 'Hard'
-};
 
 const style = {
   difficulty: {
@@ -29,14 +15,87 @@ const style = {
   },
   revealed: {
     display: 'flex',
-    flexFlow: 'row wrap'
+    flexFlow: 'row wrap',
+    minHeight: '48px'
   },
   reveal: {
-    textAlign: 'center'
+    textAlign: 'center',
+    position: 'absolute',
+    top: '254px',
+    bottom: 0
+  },
+  tokens: {
+    display: 'flex',
+    flexFlow: 'row wrap'
   }
 };
 
 const Play = props => {
+  const { router } = props;
+  const id = router.query.id;
+
+  const dispatch = useDispatch();
+  const mapState = state => state.cups.find(cup => cup.id === id);
+  let cup = useMappedState(mapState);
+  const [revealedTokens, setRevealedTokens] = useState(
+    cup && cup.revealedTokens ? cup.revealedTokens : []
+  );
+  const [unRevealedTokens, setUnRevealedTokens] = useState(
+    cup && cup.unRevealedTokens ? cup.unRevealedTokens : []
+  );
+
+  // router cannot be used directly in render as this may be called on server side rendering
+  const invalidPage = !cup || !cup.tokens;
+  useEffect(() => {
+    if (invalidPage) {
+      router.push({ pathname: '/' });
+    }
+  }, [cup]);
+  if (invalidPage) {
+    return null;
+  }
+
+  useEffect(() => {
+    const tokenCount = cup.tokens.reduce((acc, t) => acc + t.count, 0);
+    if (cup.playTokens && tokenCount !== cup.playTokens.length) {
+      cup.playTokens = undefined;
+    }
+    if (!cup.playTokens) {
+      cup.playTokens = cup.tokens.flatMap(token =>
+        Array.from({ length: token.count }, () => ({
+          name: token.name,
+          image: token.image
+        }))
+      );
+    }
+    if (!unRevealedTokens.length && !revealedTokens.length) {
+      setUnRevealedTokens([...cup.playTokens]);
+      setRevealedTokens([]);
+    }
+  }, [cup]);
+
+  const reveal = useCallback(() => {
+    if (unRevealedTokens.length == 0) {
+      setUnRevealedTokens([...cup.playTokens]);
+      setRevealedTokens([]);
+    } else {
+      const randomNumber = Math.floor(Math.random() * unRevealedTokens.length);
+      const token = unRevealedTokens[randomNumber];
+      const newUnRevealedTokens = unRevealedTokens.filter(t => t !== token);
+      const newRevealedTokens = [...revealedTokens, token];
+      setUnRevealedTokens(newUnRevealedTokens);
+      setRevealedTokens(newRevealedTokens);
+      dispatch(
+        updateCup({
+          ...cup,
+          unRevealedTokens: newUnRevealedTokens,
+          revealedTokens: newRevealedTokens
+        })
+      );
+    }
+  }, [cup, unRevealedTokens, revealedTokens]);
+
+  console.log('render');
   return (
     <div className="play-view">
       <div className="mdl-grid">
@@ -45,43 +104,28 @@ const Play = props => {
           <h6 style={style.difficulty}>{cup.difficulty}</h6>
         </div>
         <div style={style.revealed} className="mdl-cell mdl-cell--12-col">
-          {tokens
-            .filter(token => token.revealed)
-            .map((token, i) => (
-              <TokenPlay
-                key={i}
-                token={token}
-                first={i == 0}
-                revealed={token.revealed}
-              />
-            ))}
+          {revealedTokens.map((token, i) => (
+            <TokenPlay key={i} token={token} first={i == 0} revealed={true} />
+          ))}
         </div>
         <div style={style.revealed} className="mdl-cell mdl-cell--12-col">
-          {tokens
-            .filter(token => !token.revealed)
-            .map((token, i) => (
-              <TokenPlay
-                key={i}
-                token={token}
-                first={i == 0}
-                revealed={token.revealed}
-              />
-            ))}
+          {unRevealedTokens.map((token, i) => (
+            <TokenPlay key={i} token={token} first={i == 0} revealed={false} />
+          ))}
         </div>
-        <div style={style.reveal} className="mdl-cell mdl-cell--12-col">
+        <div
+          style={style.reveal}
+          className="mdl-cell mdl-cell--12-col"
+          onClick={reveal}
+        >
           Reveal a Mythos token!
+          {revealedTokens.length > 0 && (
+            <TokenBig token={revealedTokens[revealedTokens.length - 1]} />
+          )}
         </div>
-        <style>
-          {`
-            .tokens {
-              display: flex;
-              flex-flow: row wrap;
-            }
-          `}
-        </style>
       </div>
     </div>
   );
 };
 
-export default Play;
+export default withRouter(Play);
